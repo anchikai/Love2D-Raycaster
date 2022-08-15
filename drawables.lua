@@ -5,7 +5,7 @@ local P3 = 3*math.pi/2
 local DR = math.pi / 180 -- One degree in radians
 local imgDecoder = require("imageDecoder")
 
-local image = imgDecoder("LeahTroll.png")
+local image = imgDecoder("brick.png")
 
 function drawables.drawPlayer()
     love.graphics.setColor(1, 1, 0)
