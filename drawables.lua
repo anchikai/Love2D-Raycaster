@@ -3,6 +3,7 @@ local playerSize = 8
 local P2 = math.pi/2
 local P3 = 3*math.pi/2
 local DR = math.pi / 180 -- One degree in radians
+local imgDecoder = require("imageDecoder")
 
 local allTextures = {
     -- Brick
