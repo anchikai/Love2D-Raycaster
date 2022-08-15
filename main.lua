@@ -19,6 +19,7 @@ function love.load()
     Player.X, Player.Y = 96, CenterY
     Player.DeltaX, Player.DeltaY = math.cos(Player.Angle)*5, math.sin(Player.Angle)*5
     Player.DeltaX2, Player.DeltaY2 = math.cos(Player.Angle-(math.pi/2))*5, math.sin(Player.Angle-(math.pi/2))*5
+    Player.offsetX, Player.offsetY = 0, 0
 
     -- Map/World
     Map = {}
@@ -42,7 +43,7 @@ local rayCooldown, resetCooldown = 0, 0
 function love.update(dt)
     -- Player Movement
     if love.mouse.getX() < CenterX then
-        Player.Angle = Player.Angle - 0.066
+        Player.Angle = Player.Angle - 0.1
         if Player.Angle < 0 then
             Player.Angle = Player.Angle + 2*math.pi
         end
@@ -52,7 +53,7 @@ function love.update(dt)
         Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
     end
     if love.mouse.getX() > CenterX then
-        Player.Angle = Player.Angle + 0.066
+        Player.Angle = Player.Angle + 0.1
         if Player.Angle > 2*math.pi then
             Player.Angle = Player.Angle - 2*math.pi
         end
@@ -62,26 +63,58 @@ function love.update(dt)
         Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
     end
 
+    -- Collision
+    if Player.DeltaX < 0 then
+        Player.offsetX = -20
+    else
+        Player.offsetX = 20
+    end
+    if Player.DeltaY < 0 then
+        Player.offsetY = -20
+    else
+        Player.offsetY = 20
+    end
+    local playerGridX, playerGridY = math.floor(Player.X/64), math.floor(Player.Y/64)
+    local playerGridX_add_xOffset, playerGridY_add_yOffset = (Player.X + Player.offsetX)/64, (Player.Y + Player.offsetY)/64
+    local playerGridX_sub_xOffset, playerGridY_sub_yOffset = (Player.X - Player.offsetX)/64, (Player.Y - Player.offsetY)/64
+    local playerGridX_add_yOffset, playerGridY_add_xOffset = (Player.X + Player.offsetY)/64, (Player.Y + Player.offsetX)/64
+    local playerGridX_sub_yOffset, playerGridY_sub_xOffset = (Player.X - Player.offsetY)/64, (Player.Y - Player.offsetX)/64
+
     -- Forward/Backward
     if love.keyboard.isDown("w") then
-        Player.X = Player.X + Player.DeltaX/2
-        Player.Y = Player.Y + Player.DeltaY/2
+        if Map.Grid[math.floor(playerGridY*Map.X + playerGridX_add_xOffset) + 1] == 0 then
+            Player.X = Player.X + Player.DeltaX/2
+        end
+        if Map.Grid[math.floor(math.floor(playerGridY_add_yOffset)*Map.X + playerGridX) + 1] == 0 then
+            Player.Y = Player.Y + Player.DeltaY/2
+        end
     end
     if love.keyboard.isDown("s") then
-        Player.X = Player.X - Player.DeltaX/2
-        Player.Y = Player.Y - Player.DeltaY/2
+        if Map.Grid[math.floor(playerGridY*Map.X + playerGridX_sub_xOffset) + 1] == 0 then
+            Player.X = Player.X - Player.DeltaX/2
+        end
+        if Map.Grid[math.floor(math.floor(playerGridY_sub_yOffset)*Map.X + playerGridX) + 1] == 0 then
+            Player.Y = Player.Y - Player.DeltaY/2
+        end
     end
 
     -- Left/Right
     if love.keyboard.isDown("a") then
-        Player.X = Player.X + Player.DeltaX2/2
-        Player.Y = Player.Y + Player.DeltaY2/2
+        if Map.Grid[math.floor(playerGridY*Map.X + playerGridX_add_yOffset) + 1] == 0 then
+            Player.X = Player.X + Player.DeltaX2/2
+        end
+        if Map.Grid[math.floor(math.floor(playerGridY_add_xOffset)*Map.X + playerGridX) + 1] == 0 then
+            Player.Y = Player.Y + Player.DeltaY2/2
+        end
     end
     if love.keyboard.isDown("d") then
-        Player.X = Player.X - Player.DeltaX2/2
-        Player.Y = Player.Y - Player.DeltaY2/2
+        if Map.Grid[math.floor(playerGridY*Map.X + playerGridX_sub_yOffset) + 1] == 0 then
+            Player.X = Player.X - Player.DeltaX2/2
+        end
+        if Map.Grid[math.floor(math.floor(playerGridY_sub_xOffset)*Map.X + playerGridX) + 1] == 0 then
+            Player.Y = Player.Y - Player.DeltaY2/2
+        end
     end
-    print(Player.X, Player.Y)
 
     -- Switch Render Mode
     if love.keyboard.isDown("2") then RenderType = 2 end
