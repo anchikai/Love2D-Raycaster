@@ -12,6 +12,7 @@ function love.load()
     CenterX = love.graphics.getWidth()/2
     CenterY = love.graphics.getHeight()/2
     love.mouse.setVisible(false)
+    love.graphics.setPointSize(16)
 
     -- Player
     Player = {}
