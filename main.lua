@@ -11,7 +11,6 @@ function love.load()
     love.window.setMode(1024, 512)
     CenterX = love.graphics.getWidth()/2
     CenterY = love.graphics.getHeight()/2
-    love.mouse.setVisible(false)
     love.graphics.setPointSize(16)
 
     -- Player
@@ -42,26 +41,29 @@ end
 
 local rayCooldown, resetCooldown = 0, 0
 function love.update(dt)
+    love.mouse.setVisible(not love.window.hasFocus())
     -- Player Movement
-    if love.mouse.getX() < CenterX then
-        Player.Angle = Player.Angle - 0.1
-        if Player.Angle < 0 then
-            Player.Angle = Player.Angle + 2*math.pi
+    if love.window.hasFocus() then
+        if love.mouse.getX() < CenterX then
+            Player.Angle = Player.Angle - (CenterX-love.mouse.getX())*0.0015
+            if Player.Angle < 0 then
+                Player.Angle = Player.Angle + 2*math.pi
+            end
+            Player.DeltaX = math.cos(Player.Angle)*5
+            Player.DeltaY = math.sin(Player.Angle)*5
+            Player.DeltaX2 = math.cos(Player.Angle-(math.pi/2))*5
+            Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
         end
-        Player.DeltaX = math.cos(Player.Angle)*5
-        Player.DeltaY = math.sin(Player.Angle)*5
-        Player.DeltaX2 = math.cos(Player.Angle-(math.pi/2))*5
-        Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
-    end
-    if love.mouse.getX() > CenterX then
-        Player.Angle = Player.Angle + 0.1
-        if Player.Angle > 2*math.pi then
-            Player.Angle = Player.Angle - 2*math.pi
+        if love.mouse.getX() > CenterX then
+            Player.Angle = Player.Angle + (love.mouse.getX()-CenterX)*0.0015
+            if Player.Angle > 2*math.pi then
+                Player.Angle = Player.Angle - 2*math.pi
+            end
+            Player.DeltaX = math.cos(Player.Angle)*5
+            Player.DeltaY = math.sin(Player.Angle)*5
+            Player.DeltaX2 = math.cos(Player.Angle-(math.pi/2))*5
+            Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
         end
-        Player.DeltaX = math.cos(Player.Angle)*5
-        Player.DeltaY = math.sin(Player.Angle)*5
-        Player.DeltaX2 = math.cos(Player.Angle-(math.pi/2))*5
-        Player.DeltaY2 = math.sin(Player.Angle-(math.pi/2))*5
     end
 
     -- Collision
