@@ -14,8 +14,12 @@ return function(filename)
 		local column = {}
 		result[x] = column
 		for y = 0, result.Y - 1 do
-			local red = imageData:getPixel(x, y)
-			column[y] = red
+			local red, green, blue = imageData:getPixel(x, y)
+			column[y] = {
+				r = red,
+				g = green,
+				b = blue
+			}
 		end
 	end
 	cachedImageData[filename] = result
