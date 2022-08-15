@@ -76,10 +76,10 @@ function love.update(dt)
         Player.offsetY = 20
     end
     local playerGridX, playerGridY = math.floor(Player.X/64), math.floor(Player.Y/64)
-    local playerGridX_add_xOffset, playerGridY_add_yOffset = (Player.X + Player.offsetX)/64, (Player.Y + Player.offsetY)/64
-    local playerGridX_sub_xOffset, playerGridY_sub_yOffset = (Player.X - Player.offsetX)/64, (Player.Y - Player.offsetY)/64
-    local playerGridX_add_yOffset, playerGridY_add_xOffset = (Player.X + Player.offsetY)/64, (Player.Y + Player.offsetX)/64
-    local playerGridX_sub_yOffset, playerGridY_sub_xOffset = (Player.X - Player.offsetY)/64, (Player.Y - Player.offsetX)/64
+    local playerGridX_add_xOffset, playerGridY_add_yOffset = (Player.X + Player.DeltaX)/64, (Player.Y + Player.DeltaY)/64
+    local playerGridX_sub_xOffset, playerGridY_sub_yOffset = (Player.X - Player.DeltaX)/64, (Player.Y - Player.DeltaY)/64
+    local playerGridX_add_yOffset, playerGridY_add_xOffset = (Player.X + Player.DeltaX2)/64, (Player.Y + Player.DeltaY2)/64
+    local playerGridX_sub_yOffset, playerGridY_sub_xOffset = (Player.X - Player.DeltaX2)/64, (Player.Y - Player.DeltaY2)/64
 
     -- Forward/Backward
     if love.keyboard.isDown("w") then
