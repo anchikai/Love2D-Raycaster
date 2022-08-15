@@ -30,8 +30,8 @@ function drawables.drawMap2D()
 end
 
 function drawables.drawRays2D()
-    for ray = 0, 64 do
-        local rayAngle = Player.Angle - math.rad(30 - ray + 1)
+    for ray = 0, 90 do
+        local rayAngle = Player.Angle - math.rad(45 - ray + 1)
         rayAngle = rayAngle % (2 * math.pi)
 
         local rayX, rayY
@@ -129,8 +129,8 @@ function drawables.drawRays2D()
 end
 
 function drawables.drawRays3D()
-    for ray = 0, 64 do
-        local rayAngle = Player.Angle - math.rad(30 - ray + 1)
+    for ray = 0, 90 do
+        local rayAngle = Player.Angle - math.rad(45 - ray + 1)
         rayAngle = rayAngle % (2 * math.pi)
 
         local rayX, rayY
@@ -247,7 +247,7 @@ function drawables.drawRays3D()
         for y = 0, lineHeight do
             local c = image[math.floor(textureX)][math.floor(textureY)]
             love.graphics.setColor(c.r*shade, c.g*shade, c.b*shade)
-            love.graphics.points(ray*16, y+lineOffset)
+            love.graphics.points(ray*PointSize, y+lineOffset+256+28)
             textureY = textureY + textureYStep - 0.00001
         end
 

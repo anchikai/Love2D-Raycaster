@@ -5,29 +5,38 @@ function dist(ax, ay, bx, by, ang)
     return math.sqrt((bx-ax) * (bx-ax) + (by-ay) * (by-ay))
 end
 
+PointSize = 22
 function love.load()
     -- Window Shit
     love.graphics.setBackgroundColor(0.3, 0.3, 0.3)
-    love.window.setMode(1024, 512)
+    love.window.setMode(1920, 1080, {fullscreen = true})
     CenterX = love.graphics.getWidth()/2
     CenterY = love.graphics.getHeight()/2
-    love.graphics.setPointSize(16)
+    love.graphics.setPointSize(PointSize)
 
     -- Player
     Player = {}
     Player.Angle = 0
-    Player.X, Player.Y = 96, CenterY
+    Player.X, Player.Y = 96, CenterY+128
     Player.DeltaX, Player.DeltaY = math.cos(Player.Angle)*5, math.sin(Player.Angle)*5
     Player.DeltaX2, Player.DeltaY2 = math.cos(Player.Angle-(math.pi/2))*5, math.sin(Player.Angle-(math.pi/2))*5
     Player.offsetX, Player.offsetY = 0, 0
 
     -- Map/World
     Map = {}
-    Map.X, Map.Y, Map.Size = 16, 8, 64
+    Map.X, Map.Y, Map.Size = 16, 16, 64
     Map.Grid = {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1,
         1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
         1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1,
         1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1,
