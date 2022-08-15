@@ -8,10 +8,10 @@ local allTextures = {
     -- Brick
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -246,19 +246,25 @@ function drawables.drawRays3D()
 
         local distFinal
         local shade = 1
-        local shorterRay
+        local wallOffset
         if distVert <= distHoriz then -- Vertical wall hit
             rayX, rayY = vertX, vertY
             distFinal = distVert
             shade = 0.9
             love.graphics.setColor(0.9, 0, 0)
-            shorterRay = rayY
+            wallOffset = rayY
+            if rayAngle > P2 and rayAngle < P3 then
+                wallOffset = -wallOffset
+            end
         else -- Horizontal wall hit
             rayX, rayY = horizX, horizY
             distFinal = distHoriz
             love.graphics.setColor(0.7, 0, 0)
             shade = 0.7
-            shorterRay = rayX
+            wallOffset = rayX
+            if rayAngle < math.pi then
+                wallOffset = -wallOffset
+            end
         end
 
         -- Draw 3D Walls
@@ -269,12 +275,15 @@ function drawables.drawRays3D()
         local lineOffset = 256 - lineHeight/2
 
         local textureY, textureYStep = 0, 32/lineHeight
-        local textureX = (shorterRay/2) % 32
+        local textureX = (wallOffset/2) % 32
+        -- if rayAngle > math.pi then
+        --     textureX = 32 - textureX
+        -- end
+
         for y = 0, lineHeight do
             local index = math.floor(math.floor(textureY)*32 + textureX)
-            -- index = index % 1024
             local c = allTextures[index+1]*shade
-            love.graphics.setColor(c, c, c)
+            love.graphics.setColor(c, c/2, c/2)
             love.graphics.points(ray*16, y+lineOffset)
             textureY = textureY + textureYStep
         end

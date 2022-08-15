@@ -6,6 +6,7 @@
     "Lua.workspace.checkThirdParty": false,
     "Lua.diagnostics.globals": [
         "dist",
-        "reset"
+        "reset",
+        "clamp"
     ]
 }
