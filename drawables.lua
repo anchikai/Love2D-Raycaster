@@ -248,8 +248,18 @@ function drawables.drawRays3D()
             local c = image[math.floor(textureX)][math.floor(textureY)]
             love.graphics.setColor(c.r*shade, c.g*shade, c.b*shade)
             love.graphics.points(ray*16, y+lineOffset)
-            textureY = textureY + textureYStep
+            textureY = textureY + textureYStep - 0.00001
         end
+
+        -- Draw Floors
+        --[[ for y = lineOffset+lineHeight+1, love.graphics.getHeight() do
+            local dy, deg, rayAngleFix = y-(love.graphics.getHeight()/2), math.rad(rayAngle), math.cos(math.rad(Player.Angle-rayAngle))
+            textureX = Player.X/2 + math.cos(deg)*love.graphics.getWidth()*32/dy/rayAngleFix
+            textureY = Player.Y/2 - math.sin(deg)*love.graphics.getWidth()*32/dy/rayAngleFix
+            local c = image[math.floor(textureX)][math.floor(textureY)]
+            love.graphics.setColor(c.r*shade, c.g*shade, c.b*shade)
+            love.graphics.points(ray*16, y)
+        end ]]
     end
 end
 
